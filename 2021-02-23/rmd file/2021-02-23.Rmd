@@ -1,0 +1,86 @@
+---
+title: "Tidytuesday 2021-02-23"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+## Get the Data
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+
+tuesdata <- tidytuesdayR::tt_load('2021-02-23')
+
+earn <- tuesdata$earn
+
+```
+
+
+## Data Wrangling and Visualization
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+earn1 <- earn %>%
+  filter(quarter == 1) %>%
+  filter(race != "All Races") %>%
+  filter(sex != "Both Sexes")
+
+earn2 <- earn %>%
+  filter(quarter == 2) %>%
+  filter(race != "All Races") %>%
+  filter(sex != "Both Sexes")
+
+earn3 <- earn %>%
+  filter(quarter == 3) %>%
+  filter(race != "All Races") %>%
+  filter(sex != "Both Sexes")
+
+earn4 <- earn %>%
+  filter(quarter == 4) %>%
+  filter(race != "All Races") %>%
+  filter(sex != "Both Sexes")
+
+earn1 %>%
+ggplot(aes(x = year, y = median_weekly_earn, fill = sex)) + geom_bar(stat = "identity") +
+labs(title = "Median weekly earning in current dollars",
+subtitle = "Median weekly earning in January, February, and March (Q1) in different age groups",
+x = "Year",
+y = "Median weekly earning") +
+  scale_x_continuous(breaks = c(2010,2015,2020))+
+scale_fill_manual(values = c("#003F5C", "#86BCB6"), breaks = c("Men", "Women"))+
+  facet_wrap(~age)
+
+earn2 %>%
+ggplot(aes(x = year, y = median_weekly_earn, fill = sex)) + geom_bar(stat = "identity") +
+labs(title = "Median weekly earning in current dollars",
+subtitle = "Median weekly earning in April, May, and June (Q2) in different age groups",
+x = "Year",
+y = "Median weekly earning") +
+  scale_x_continuous(breaks = c(2010,2015,2020))+
+scale_fill_manual(values = c("#003F5C", "#86BCB6"), breaks = c("Men", "Women"))+
+  facet_wrap(~age)
+
+earn3 %>%
+ggplot(aes(x = year, y = median_weekly_earn, fill = sex)) + geom_bar(stat = "identity") +
+labs(title = "Median weekly earning in current dollars",
+subtitle = "Median weekly earning in July, August, and September (Q3) in different age groups",
+x = "Year",
+y = "Median weekly earning") +
+  scale_x_continuous(breaks = c(2010,2015,2020))+
+scale_fill_manual(values = c("#003F5C", "#86BCB6"), breaks = c("Men", "Women"))+
+  facet_wrap(~age)
+
+earn4 %>%
+ggplot(aes(x = year, y = median_weekly_earn, fill = sex)) + geom_bar(stat = "identity") +
+labs(title = "Median weekly earning in current dollars",
+subtitle = "Median weekly earning in October, November, and December (Q4) in different age groups",
+x = "Year",
+y = "Median weekly earning") +
+  scale_x_continuous(breaks = c(2010,2015,2020))+
+scale_fill_manual(values = c("#003F5C", "#86BCB6"), breaks = c("Men", "Women"))+
+  facet_wrap(~age)
+
+```
+

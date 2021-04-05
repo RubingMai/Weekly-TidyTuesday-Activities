@@ -1,0 +1,80 @@
+---
+title: "Tidytuesday 2021-02-02"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+## Get the Data
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+
+tuesdata <- tidytuesdayR::tt_load('2021-02-02')
+
+hs_students <- tuesdata$hs_students
+bach_students <- tuesdata$bach_students
+
+```
+
+
+## Data Wrangling and Visualization
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+hs_students <- hs_students %>%
+  mutate(Total = str_sub(Total, 1, 4))
+
+hs_students$Total = as.double(hs_students$Total)
+
+hs_students <- hs_students %>%
+  rename(Year = Total)
+
+hs_students <- hs_students %>%
+  select(-contains("Standard Errors")) %>%
+  select(-contains("Total")) %>%
+  pivot_longer(-c(Year), names_to = "Ethnicity", values_to = "Percentage") 
+
+hs_students$Percentage = as.double(hs_students$Percentage)
+
+hs_students <- hs_students %>%
+  mutate(Ethnicity = case_when(
+  Ethnicity == "White1" ~ "White students",
+  Ethnicity == "Black1" ~ "Black students",
+  Ethnicity == "American Indian/\r\nAlaska Native" ~ "American Indian/Alaska Native",
+  TRUE ~ Ethnicity))
+
+hs_students %>%
+  ggplot(aes(x = Year, y = Percentage, color = Ethnicity)) +
+  geom_line() +
+  labs(x="Year", y="Percent of all persons age 25 and over",
+       title = "High School Completion",
+       subtitle = "The percentage of students broken down by ethnicity, aged 25\n and over who have graduated HS from 1910 to 2016.")
+
+bach_students <- bach_students %>%
+  rename(Year = Total)
+
+bach_students <- bach_students %>%
+  select(-contains("Standard Errors")) %>%
+  select(-contains("Total")) %>%
+  pivot_longer(-c(Year), names_to = "Ethnicity", values_to = "Percentage") 
+
+bach_students$Percentage = as.double(bach_students$Percentage)
+
+bach_students <- bach_students %>%
+  mutate(Ethnicity = case_when(
+  Ethnicity == "White1" ~ "White students",
+  Ethnicity == "Black1" ~ "Black students",
+  Ethnicity == "American Indian/\r\nAlaska Native" ~ "American Indian/Alaska Native",
+  TRUE ~ Ethnicity))
+
+bach_students %>%
+  ggplot(aes(x = Year, y = Percentage, color = Ethnicity)) +
+  geom_line() +
+  labs(x="Year", y="Percent of all persons age 25 and over",
+       title = "Bachelor's Degree Attainment",
+       subtitle = "The percentage of students broken down by ethnicity, aged 25\n and over who have achieved a bachelor's degree from 1910 to 2016.")
+
+```
+

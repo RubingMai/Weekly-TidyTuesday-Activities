@@ -1,0 +1,40 @@
+---
+title: "Tidytuesday 2021-03-16"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+## Get the Data
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+
+tuesdata <- tidytuesdayR::tt_load('2021-03-16')
+
+games <- tuesdata$games
+
+```
+
+
+## Data Wrangling and Visualization
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+game <- games %>%
+  group_by(gamename) %>%
+  summarize(peak_max = max(peak))
+
+top_10_games <- top_n(game, 10, peak_max)
+top_10_games$peak_max <- top_10_games$peak_max/1e6
+  
+top_10_games %>%
+  ggplot(aes(x = peak_max, y = reorder(gamename, peak_max))) + 
+  geom_bar(stat = "identity") +
+  labs(title = "Top 10 Video Games by Highest Number of Players\n at the Same Time",
+       x = "Highest number of players at the same time in millions",
+       y = "Name of video games")
+
+```
+

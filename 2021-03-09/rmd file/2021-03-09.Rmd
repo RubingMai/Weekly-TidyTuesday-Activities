@@ -1,0 +1,38 @@
+---
+title: "Tidytuesday 2021-03-09"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+## Get the Data
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+
+tuesdata <- tidytuesdayR::tt_load('2021-03-09')
+
+movies <- tuesdata$movies
+
+```
+
+
+## Data Wrangling and Visualization
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+movies1 <- movies %>%
+  group_by(year) %>%
+  mutate(Pass = sum(binary == "PASS")) 
+
+movies1 %>% 
+  ggplot(aes(x = year, y = Pass)) + 
+  geom_point() +
+  geom_line() +
+  labs(title = "Number of Movies that Passed the Bechdel Test since 1971",
+       x = "Year",
+       y = "Number of movies that passed the Bechdel Test")
+
+```
+

@@ -1,0 +1,45 @@
+---
+title: "Tidytuesday 2021-03-23"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+## Get the Data
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+
+tuesdata <- tidytuesdayR::tt_load('2021-03-23')
+
+unvotes <- tuesdata$unvotes
+issues <- tuesdata$issues
+
+```
+
+
+## Data Wrangling and Visualization
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+vote <- inner_join(unvotes, issues, by = "rcid")
+
+vote1 <- vote %>%
+  filter(country == c("Canada", "China", "United States", "Russia"))
+
+vote2 <- vote1 %>%
+  group_by(country, vote, issue) %>%
+  count()
+
+vote2 %>%
+  ggplot(aes(x = issue, y = n, fill = vote)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(title = "UN Votes on Various Issues",
+       x = "Issue name",
+       y = "Number of votes") +
+  facet_wrap(~country)
+
+```
+

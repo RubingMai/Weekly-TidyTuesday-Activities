@@ -1,0 +1,35 @@
+---
+title: "Tidytuesday 2021-02-09"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+## Get the Data
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+
+tuesdata <- tidytuesdayR::tt_load('2021-02-09')
+
+lifetime_earn <- tuesdata$lifetime_earn
+
+```
+
+
+## Data Wrangling and Visualization
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+lifetime_earn$lifetime_earn <- lifetime_earn$lifetime_earn/1e6
+
+lifetime_earn %>%
+  ggplot(aes(x = gender, y = lifetime_earn, fill = race)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Lifetime Earnings by Different Gender",
+       x = "Gender",
+       y = "Lifetime earnings in millions") 
+
+```
+
