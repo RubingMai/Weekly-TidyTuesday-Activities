@@ -1,7 +1,7 @@
 # Weekly-TidyTuesday-Activities
 STA303 Professional Development Task
 
-All the data I use is downloaded directly from Tidytuesday using the tidytuesdayR package.
+All the data I use is downloaded directly from Tidytuesday using the "tidytuesdayR" package.
 
 Possible resource: https://github.com/rfordatascience/tidytuesday (Links to weekly TidyTuesday activities page.) 
 
